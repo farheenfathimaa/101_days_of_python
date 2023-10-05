@@ -31,5 +31,5 @@ while not end_of_game:
     print(f"remaining lives: {lives}")
     print(stages[lives])
     if lives==0:
-            print("You lose!:(")
+            print(f"You lose!:( the word was {word}")
             break
