@@ -22,5 +22,5 @@ for _ in range(100):
 
 
 
-screen=Screen()
+screen=t.Screen()
 screen.exitonclick()
