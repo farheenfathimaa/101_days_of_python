@@ -1,7 +1,0 @@
-total=(float(input("enter the total amount: $")))
-people=(int(input("enter the number of people to split the bill into: ")))
-p=(int(input("enter the percent of tip you want to give(10%, 12%, 15%): ")))
-tip=float(total/people)*(1+(p/100))
-TIP=round(tip,2)
-T="{:.2f}".format(TIP)
-print("each person should pay: $"+T)
