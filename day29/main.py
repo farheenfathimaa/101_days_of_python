@@ -2,6 +2,8 @@ from tkinter import *
 from tkinter import messagebox
 from random import randint, choice, shuffle
 import pyperclip
+import json
+
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
 def generate_password():
@@ -33,16 +35,72 @@ def save():
     username = user_entry.get()
     password = pass_entry.get()
 
+    new_data={
+                website: {
+                    "Username":username,
+                    "Password":password
+                }
+            }
+    
     if website=="" or password=="":
         messagebox.showerror(title="Oops!", message="Some fields are empty.")
     
     else:
+        # try:
+        #         with open("data.json", "r") as data_file:
+        #             # Try to load existing data
+        #             data = json.load(data_file)
+        #     except (json.JSONDecodeError, FileNotFoundError):
+        #         # If file is empty or not found, initialize with an empty dictionary
+        #         data = {}
+
+        #     # Update the old data with new data
+        #     data.update(new_data)
+
+        #     with open("data.json", "w") as data_file:
+        #         # Save the updated data
+        #         json.dump(data, data_file, indent=4)
+        #         web_entry.delete(0,END)
+        #         pass_entry.delete(0,END)
+
+
         is_ok= messagebox.askokcancel(title=website,message=f"These are the details entered: \nEmail: {username} \nPassword: {password}\nIs this ok to save?")
         if is_ok:
-            with open("data.txt","a") as data:
-                data.write(f"\n{website} | {username} | {password}")
-                web_entry.delete(0,END)
-                pass_entry.delete(0,END)
+            try:
+                with open("data.json") as data_file:
+                    # Reading old data
+                    data = json.load(data_file)
+
+            except FileNotFoundError:
+                with open("data.json", "w") as data_file:
+                    # Creating a new file if it doesn't exist
+                    json.dump(new_data, data_file, indent=4)
+            else:
+                # Updating old data with new data
+                data.update(new_data)
+                with open("data.json", "w") as data_file:
+                    # Saving updated data
+                    json.dump(data, data_file, indent=4)
+            finally:
+                # Clearing entries
+                web_entry.delete(0, END)
+                pass_entry.delete(0, END)
+            
+# ---------------------------- SEARCH PASSWORD ------------------------------- #
+def search():
+    website = web_entry.get()
+    try:
+        with open("data.json") as data_file:
+            data=json.load(data_file)
+    except FileNotFoundError:
+        messagebox.showinfo(title="Error",message="No Data File Found")
+    else:
+        if website in data:
+            username = data[website]["Username"]
+            password = data[website]["Password"]
+            messagebox.showinfo(title=website,message=f"Email: {username}\nPassword: {password}")
+        else:
+            messagebox.showerror(website,message='This website was not found in data')
 
 # ---------------------------- UI SETUP ------------------------------- #
 window=Tk()
@@ -56,9 +114,9 @@ canvas.grid(column=1,row=0)
 
 website_label=Label(text="Website:")
 website_label.grid(column=0,row=1)
-web_entry=Entry(width=55)
+web_entry=Entry(width=36)
 web_entry.focus()
-web_entry.grid(column=1,row=1,columnspan=2)
+web_entry.grid(column=1,row=1)
 
 username_label=Label(text="Email/Username:")
 username_label.grid(column=0,row=2)
@@ -78,5 +136,8 @@ gen_button.grid(column=2,row=3)
 
 add_button=Button(text="Add",width=47,command=save)
 add_button.grid(column=1,row=4,columnspan=2)
+
+search_button=Button(text="Search",width=14,command=search)
+search_button.grid(column=2,row=1,columnspan=1)
 
 window.mainloop()
