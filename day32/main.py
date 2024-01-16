@@ -12,7 +12,7 @@ with open("quotes.txt") as quotes:
 quote=random.choice(lines)
 
 my_email="somethingisfishy93@gmail.com"
-password="dlwnxjxpiqcvmnly"
+password="something"
 
 if week_day==0:
     with smtplib.SMTP("smtp.gmail.com") as connection:
