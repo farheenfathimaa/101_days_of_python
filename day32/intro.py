@@ -1,7 +1,7 @@
 import smtplib
 
 my_email="somethingisfishy93@gmail.com"
-password="dlwnxjxpiqcvmnly"
+password="something"
 try:
     with smtplib.SMTP_SSL("smtp.gmail.com",465) as connection:
         # connection.starttls() #TLS stands for Transport Layer Security, this command encrpts/secures the email
@@ -14,7 +14,7 @@ except Exception as e:
 # from email.mime.text import MIMEText
 
 # my_email = "somethingisfishy93@gmail.com"
-# password = "dlwnxjxpiqcvmnly"
+# password = "something"
 # recipient_email = "somethingisfishy93@yahoo.com"
 
 # # Create a MIMEText object to represent your message
